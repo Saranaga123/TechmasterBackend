@@ -17,7 +17,7 @@ import { WorkLikeRating, WorkLikeRatingRatingModel } from "./models/worklikerati
 import { WorkDisLikeRating, WorkDisLikeRatingRatingModel } from "./models/workdislikerating.model";
 import { CusReqModel } from "./models/cusrequest.model"; 
 dbConnect(); 
-    
+mongoose.set('strictQuery', true);    
 const app = express(); 
 const port = process.env.PORT || 6001;
 app.use(bodyParser.json({ 
