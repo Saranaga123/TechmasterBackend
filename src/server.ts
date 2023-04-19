@@ -16,8 +16,7 @@ import { AdminNote, AdminNoteModel } from "./models/adminNote.model";
 import { WorkLikeRating, WorkLikeRatingRatingModel } from "./models/worklikerating.model";
 import { WorkDisLikeRating, WorkDisLikeRatingRatingModel } from "./models/workdislikerating.model";
 import { CusReqModel } from "./models/cusrequest.model"; 
-dbConnect(); 
-mongoose.set('strictQuery', true);    
+dbConnect();  
 const app = express(); 
 const port = process.env.PORT || 6001;
 app.use(bodyParser.json({ 
