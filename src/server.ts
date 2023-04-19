@@ -225,7 +225,7 @@ app.post("/api/users/Create", asyncHandler(
         const dbUser = await UserModel.create(newUser);
         res.send("Done");
       } catch (error) {
-        console.error(error);
+        console.log(error);
         next(error);
       }
     }
