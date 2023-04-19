@@ -184,47 +184,52 @@ app.get("/api/user/provider/:searchTerm",asyncHandler(
         res.send(providerDetail) 
     } 
 ))
-app.post("/api/users/Create",asyncHandler(
-    async(req,res,next)=>{
-        res.header('Access-Control-Allow-Origin', '*'); 
-        const {add1,add2,add3,email,id,name,bname,nic,password,document,rated,role,tp,btp,type,lat,lon,cat1,cat2,cat3,cat4,cat5,cat6,cat7,cat8,district}=req.body;
-        const user = await UserModel.findOne({email});
-        if(user){
-            res.send("already")
-            return
+app.post("/api/users/Create", asyncHandler(
+    async (req, res, next) => {
+      res.header('Access-Control-Allow-Origin', '*');
+      try {
+        const { add1, add2, add3, email, id, name, bname, nic, password, document, rated, role, tp, btp, type, lat, lon, cat1, cat2, cat3, cat4, cat5, cat6, cat7, cat8, district } = req.body;
+        const user = await UserModel.findOne({ email });
+        if (user) {
+          res.send("already");
+          return;
         }
-        const newUser:User = {
-            add1: add1,
-            add2: add2,
-            add3: add3,
-            email: email,
-            id: '',
-            name: name,
-            nic: nic,
-            password: password,
-            document: document,
-            rated: rated,
-            lat: lat,
-            lon: lon,
-            role: role,
-            tp: tp,
-            type: type,
-            cat1: cat1,
-            cat2: cat2,
-            cat3: cat3,
-            cat4: cat4,
-            cat5: cat5,
-            cat6: cat6,
-            cat7: cat7,
-            cat8: cat8,
-            bname: bname,
-            btp: btp,
-            district: district
-        }  
+        const newUser = {
+          add1: add1,
+          add2: add2,
+          add3: add3,
+          email: email,
+          id: '',
+          name: name,
+          nic: nic,
+          password: password,
+          document: document,
+          rated: rated,
+          lat: lat,
+          lon: lon,
+          role: role,
+          tp: tp,
+          type: type,
+          cat1: cat1,
+          cat2: cat2,
+          cat3: cat3,
+          cat4: cat4,
+          cat5: cat5,
+          cat6: cat6,
+          cat7: cat7,
+          cat8: cat8,
+          bname: bname,
+          btp: btp,
+          district: district
+        };
         const dbUser = await UserModel.create(newUser);
-        res.send("Done")
+        res.send("Done");
+      } catch (error) {
+        console.error(error);
+        next(error);
+      }
     }
-))
+  ));
 app.post("/api/users/Update", asyncHandler(
     async(req, res, next) => {
         res.header('Access-Control-Allow-Origin', '*'); 
