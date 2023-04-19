@@ -28,10 +28,7 @@ app.use(bodyParser.json({
     parameterLimit: 100000,
     extended: true 
 }));
-app.use (cors({
-    credentials:true,
-    origin:[ "*"]
-}));
+app.use(cors());
 app.get("/api/users",asyncHandler(
     async(req,res)=>{
         res.header('Access-Control-Allow-Origin', '*'); 
