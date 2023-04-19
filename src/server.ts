@@ -192,6 +192,7 @@ app.post("/api/users/Create", asyncHandler(
         const user = await UserModel.findOne({ email });
         if (user) {
           res.send("already");
+          console.log("already"); 
           return;
         }
         const newUser = {
@@ -224,9 +225,9 @@ app.post("/api/users/Create", asyncHandler(
         };
         const dbUser = await UserModel.create(newUser);
         res.send("Done");
+        console.log("Done"); 
       } catch (error) {
-        console.log(error);
-        next(error);
+        console.log(error); 
       }
     }
   ));
