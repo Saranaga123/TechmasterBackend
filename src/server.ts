@@ -16,7 +16,8 @@ import { AdminNote, AdminNoteModel } from "./models/adminNote.model";
 import { WorkLikeRating, WorkLikeRatingRatingModel } from "./models/worklikerating.model";
 import { WorkDisLikeRating, WorkDisLikeRatingRatingModel } from "./models/workdislikerating.model";
 import { CusReqModel } from "./models/cusrequest.model"; 
-dbConnect();  
+dbConnect(); 
+    
 const app = express(); 
 const port = process.env.PORT || 6001;
 app.use(bodyParser.json({ 
@@ -29,16 +30,18 @@ app.use(bodyParser.json({
 }));
 app.use (cors({
     credentials:true,
-    origin:[ "*"]
+    origin:[ "http://localhost:4200"]
 }));
 app.get("/api/users",asyncHandler(
     async(req,res)=>{
+        res.header('Access-Control-Allow-Origin', '*'); 
         const users = await UserModel.find(); 
         res.send(users)
     }
 )) 
 app.post("/api/cusreq", asyncHandler(
     async (req, res, next) => {
+        res.header('Access-Control-Allow-Origin', '*'); 
         const { cusid, workid, cusemail, cusmobile, cusname, status, providerid,providerName, workName } = req.body;
         const cusrequest = await CusReqModel.findOne({ cusid, workid });
         if (cusrequest) {
@@ -64,6 +67,7 @@ app.post("/api/cusreq", asyncHandler(
 ));
 app.get("/api/cusreq/:searchTerm",asyncHandler(
     async(req,res)=>{
+        res.header('Access-Control-Allow-Origin', '*'); 
         const searchTerm = req.params.searchTerm;
         const list =await CusReqModel.find(); 
         const serviceslist = list
@@ -74,6 +78,7 @@ app.get("/api/cusreq/:searchTerm",asyncHandler(
 ))
 app.get("/api/myreq/:searchTerm",asyncHandler(
     async(req,res)=>{
+        res.header('Access-Control-Allow-Origin', '*'); 
         const searchTerm = req.params.searchTerm;
         const list =await CusReqModel.find(); 
         const serviceslist = list
@@ -84,6 +89,7 @@ app.get("/api/myreq/:searchTerm",asyncHandler(
 ))
 app.post("/api/work/like", asyncHandler(
     async (req, res, next) => {
+        res.header('Access-Control-Allow-Origin', '*'); 
         const { cusid, workid } = req.body;
         const like = await WorkLikeRatingRatingModel.findOne({ cusid, workid });
         if (like) {
@@ -102,6 +108,7 @@ app.post("/api/work/like", asyncHandler(
 ));
 app.post("/api/work/dislike",asyncHandler(
     async(req,res,next)=>{
+        res.header('Access-Control-Allow-Origin', '*'); 
         const {cusid,workid}=req.body;
         const dislike = await WorkDisLikeRatingRatingModel.findOne({cusid});
         if(dislike){
@@ -120,6 +127,7 @@ app.post("/api/work/dislike",asyncHandler(
 ))
 app.get("/api/work/likelist/:searchTerm",asyncHandler(
     async(req,res)=>{
+        res.header('Access-Control-Allow-Origin', '*'); 
         const searchTerm = req.params.searchTerm;
         const likelist =await WorkLikeRatingRatingModel.find(); 
         const serviceslist = likelist
@@ -130,6 +138,7 @@ app.get("/api/work/likelist/:searchTerm",asyncHandler(
 ))
 app.get("/api/work/dislikelist/:searchTerm",asyncHandler(
     async(req,res)=>{
+        res.header('Access-Control-Allow-Origin', '*'); 
         const searchTerm = req.params.searchTerm;
         const dislikelist =await WorkDisLikeRatingRatingModel.find(); 
         const serviceslist = dislikelist
@@ -140,6 +149,7 @@ app.get("/api/work/dislikelist/:searchTerm",asyncHandler(
 ))
 app.get("/api/work/category/:searchTerm",asyncHandler(
     async(req,res)=>{
+        res.header('Access-Control-Allow-Origin', '*'); 
         const searchTerm = req.params.searchTerm;
         const work =await WorkModel.find(); 
         const serviceslist = work
@@ -150,6 +160,7 @@ app.get("/api/work/category/:searchTerm",asyncHandler(
 ))
 app.get("/api/work/category/:searchTerm1/:searchTerm2", asyncHandler(
     async (req, res) => {
+        res.header('Access-Control-Allow-Origin', '*'); 
         const searchTerm1 = req.params.searchTerm1.toLowerCase();
         const searchTerm2 = req.params.searchTerm2.toLowerCase();
         console.log(searchTerm1)
@@ -164,6 +175,7 @@ app.get("/api/work/category/:searchTerm1/:searchTerm2", asyncHandler(
 ));
 app.get("/api/user/provider/:searchTerm",asyncHandler(
     async(req,res)=>{
+        res.header('Access-Control-Allow-Origin', '*'); 
         const searchTerm = req.params.searchTerm;
         const provider =await UserModel.find(); 
         const providerDetail = provider
@@ -174,6 +186,7 @@ app.get("/api/user/provider/:searchTerm",asyncHandler(
 ))
 app.post("/api/users/Create",asyncHandler(
     async(req,res,next)=>{
+        res.header('Access-Control-Allow-Origin', '*'); 
         const {add1,add2,add3,email,id,name,bname,nic,password,document,rated,role,tp,btp,type,lat,lon,cat1,cat2,cat3,cat4,cat5,cat6,cat7,cat8,district}=req.body;
         const user = await UserModel.findOne({email});
         if(user){
@@ -214,6 +227,7 @@ app.post("/api/users/Create",asyncHandler(
 ))
 app.post("/api/users/Update", asyncHandler(
     async(req, res, next) => {
+        res.header('Access-Control-Allow-Origin', '*'); 
       const { add1, add2, add3, email, id, name, bname, nic,  document, rated, role, tp, btp, type, lat, lon, cat1, cat2, cat3, cat4, cat5, cat6, cat7, cat8,district } = req.body;
   
       const query = { email };
@@ -255,6 +269,7 @@ app.post("/api/users/Update", asyncHandler(
   ));
 app.post("/api/users/Updatepw", asyncHandler(
     async(req, res, next) => {
+        res.header('Access-Control-Allow-Origin', '*'); 
       const { add1, add2, add3, email, id, name, password, bname, nic,  document, rated, role, tp, btp, type, lat, lon, cat1, cat2, cat3, cat4, cat5, cat6, cat7, cat8, district } = req.body;
   
       const query = { email };
@@ -297,12 +312,14 @@ app.post("/api/users/Updatepw", asyncHandler(
   ));
 app.get("/api/users/destro",asyncHandler(
     async(req,res)=>{
+        res.header('Access-Control-Allow-Origin', '*'); 
         const users = await UserModel.deleteMany(); 
         res.send(users)
     }
 )) 
 app.get("/api/users/seed",asyncHandler(
     async (req,res)=>{
+        res.header('Access-Control-Allow-Origin', '*'); 
         const userCount =await UserModel.countDocuments();
         if(userCount>0){
             res.send ("seed is already done");
@@ -314,6 +331,7 @@ app.get("/api/users/seed",asyncHandler(
 ))
 app.get("/api/work",asyncHandler(
     async(req,res)=>{
+        res.header('Access-Control-Allow-Origin', '*'); 
         const works = await WorkModel.find(); 
         
         res.send(works)
@@ -321,12 +339,14 @@ app.get("/api/work",asyncHandler(
 ))
 app.get("/api/work/images",asyncHandler(
     async(req,res)=>{
+        res.header('Access-Control-Allow-Origin', '*'); 
         const works = await WorkImageModel.find(); 
         res.send(works)
     } 
 ))
 app.get("/api/workimage/search/:searchTerm",asyncHandler(
     async(req,res)=>{
+        res.header('Access-Control-Allow-Origin', '*'); 
         const searchTerm = req.params.searchTerm;
         const workimage =await WorkImageModel.find();
         const workimages = workimage
@@ -339,6 +359,7 @@ app.get("/api/workimage/search/:searchTerm",asyncHandler(
 )
 app.get("/api/work/search/:searchTerm",asyncHandler(
     async(req,res)=>{
+        res.header('Access-Control-Allow-Origin', '*'); 
         const searchTerm = req.params.searchTerm;
         const work =await WorkModel.find(); 
         const serviceslist = work
@@ -351,6 +372,7 @@ app.get("/api/work/search/:searchTerm",asyncHandler(
 )
 app.get("/api/workselect/search/:searchTerm",asyncHandler(
     async(req,res)=>{
+        res.header('Access-Control-Allow-Origin', '*'); 
         const searchTerm = req.params.searchTerm;
         const work =await WorkModel.find(); 
         const serviceslist = work
@@ -363,28 +385,33 @@ app.get("/api/workselect/search/:searchTerm",asyncHandler(
 )
 app.get('/api/req/delete/:id', async (req, res) => {
     try {
+        res.header('Access-Control-Allow-Origin', '*'); 
       const deletedReq = await CusReqModel.findByIdAndDelete(req.params.id);
       if (!deletedReq) {
         return res.status(404).send({ error: 'Work not found' });
       }
       res.send(deletedReq);
     } catch (error) {
+        res.header('Access-Control-Allow-Origin', '*'); 
       res.status(500).send({ error: 'Internal server error' });
     } 
 });
 app.get('/api/work/delete/:id', async (req, res) => {
     try {
+        res.header('Access-Control-Allow-Origin', '*'); 
       const deletedWork = await WorkModel.findByIdAndDelete(req.params.id);
       if (!deletedWork) {
         return res.status(404).send({ error: 'Work not found' });
       }
       res.send(deletedWork);
     } catch (error) {
+        res.header('Access-Control-Allow-Origin', '*'); 
       res.status(500).send({ error: 'Internal server error' });
     } 
 });
 app.get('/api/req/decline/:id', async (req, res) => {
     try {
+        res.header('Access-Control-Allow-Origin', '*'); 
         const cusReq = await CusReqModel.findByIdAndUpdate(
             req.params.id, 
             { status: 'declined' },
@@ -395,11 +422,13 @@ app.get('/api/req/decline/:id', async (req, res) => {
           }
           res.send(cusReq);
     } catch (error) {
+        res.header('Access-Control-Allow-Origin', '*'); 
       res.status(500).send({ error: 'Internal server error' });
     } 
 });
 app.get('/api/req/approve/:id', async (req, res) => {
     try {
+        res.header('Access-Control-Allow-Origin', '*'); 
         const cusReq = await CusReqModel.findByIdAndUpdate(
             req.params.id, 
             { status: 'approved' },
@@ -410,17 +439,20 @@ app.get('/api/req/approve/:id', async (req, res) => {
           }
           res.send(cusReq);
     } catch (error) {
+        res.header('Access-Control-Allow-Origin', '*'); 
       res.status(500).send({ error: 'Internal server error' });
     } 
 });
 app.get("/api/work/destro",asyncHandler(
     async(req,res)=>{
+        res.header('Access-Control-Allow-Origin', '*'); 
         const works = await WorkModel.deleteMany(); 
         res.send(works)
     }
 )) 
 app.get("/api/works/destro/:searchTerm",asyncHandler(
     async(req,res)=>{
+        res.header('Access-Control-Allow-Origin', '*'); 
         const searchTerm = req.params.searchTerm;
         await WorkModel.deleteOne({id:searchTerm}); 
         res.send(searchTerm)
@@ -428,6 +460,7 @@ app.get("/api/works/destro/:searchTerm",asyncHandler(
 ))
 app.post("/api/works/Create",asyncHandler(
     async(req,res,next)=>{
+        res.header('Access-Control-Allow-Origin', '*'); 
         const {name,description, email,category,location,bname,district }=req.body; 
         const newWork:Work = {
             name: name,
@@ -445,6 +478,7 @@ app.post("/api/works/Create",asyncHandler(
 ))
 app.post("/api/works/image/Create",asyncHandler(
     async(req,res,next)=>{
+        res.header('Access-Control-Allow-Origin', '*'); 
         const {workid,photo }=req.body; 
         const newWorkImage:WorkImage = {
             workid: workid,
@@ -457,6 +491,7 @@ app.post("/api/works/image/Create",asyncHandler(
 ))
 app.get("/api/works/search/:searchTerm",asyncHandler(
     async(req,res)=>{
+        res.header('Access-Control-Allow-Origin', '*'); 
         const searchTerm = req.params.searchTerm;
         const work =await WorkModel.find();
         const works = work
@@ -469,6 +504,7 @@ app.get("/api/works/search/:searchTerm",asyncHandler(
 )
 app.get("/api/users/search/:searchTerm",asyncHandler(
         async(req,res)=>{
+            res.header('Access-Control-Allow-Origin', '*'); 
             const searchTerm = req.params.searchTerm;
             const user =await UserModel.find();
             const users = user
@@ -484,6 +520,7 @@ app.listen(port,()=>{
 })
 app.get("/api/buyerrequest/seed",asyncHandler(
     async (req,res)=>{
+        res.header('Access-Control-Allow-Origin', '*'); 
         const buyerRequestCount =await BuyerRequestModel.countDocuments();
         if(buyerRequestCount>0){
             res.send ("seed is already done");
@@ -495,18 +532,21 @@ app.get("/api/buyerrequest/seed",asyncHandler(
 ))
 app.get("/api/buyerrequest",asyncHandler(
     async(req,res)=>{
+        res.header('Access-Control-Allow-Origin', '*'); 
         const buyerRequestCount = await BuyerRequestModel.find(); 
         res.send(buyerRequestCount)
     } 
 ))
 app.get("/api/buyerrequest/destro",asyncHandler(
     async(req,res)=>{
+        res.header('Access-Control-Allow-Origin', '*'); 
         const buyerRequestCount = await BuyerRequestModel.deleteMany(); 
         res.send(buyerRequestCount)
     }
 )) 
 app.get("/api/buyerrequest/search/:searchTerm",asyncHandler(
     async(req,res)=>{
+        res.header('Access-Control-Allow-Origin', '*'); 
         const searchTerm = req.params.searchTerm;
         const buyerrequest =await BuyerRequestModel.find();
         const buyerrequests = buyerrequest
@@ -519,6 +559,7 @@ app.get("/api/buyerrequest/search/:searchTerm",asyncHandler(
 )
 app.get("/api/buyerrequest/buyerbasesearch/:searchTerm",asyncHandler(
     async(req,res)=>{
+        res.header('Access-Control-Allow-Origin', '*'); 
         const searchTerm = req.params.searchTerm;
         const buyerrequest =await BuyerRequestModel.find();
         const buyerrequests = buyerrequest
@@ -531,6 +572,7 @@ app.get("/api/buyerrequest/buyerbasesearch/:searchTerm",asyncHandler(
 )
 app.get("/api/buyerrequest/destro/:searchTerm",asyncHandler(
     async(req,res)=>{
+        res.header('Access-Control-Allow-Origin', '*'); 
         const searchTerm = req.params.searchTerm;
         await BuyerRequestModel.deleteOne({id:searchTerm}); 
         res.send(searchTerm)
@@ -538,6 +580,7 @@ app.get("/api/buyerrequest/destro/:searchTerm",asyncHandler(
 ))
 app.post("/api/buyerrequest/Create",asyncHandler(
     async(req,res,next)=>{
+        res.header('Access-Control-Allow-Origin', '*'); 
         const {bname,bcontact,femail,price,product,bemail,fname,fcontact}=req.body; 
         const newBuyerRequest:BuyerRequest = {
             bname: bname,
@@ -556,6 +599,7 @@ app.post("/api/buyerrequest/Create",asyncHandler(
 ))
 app.get("/api/users/farmers",asyncHandler(
     async(req,res)=>{
+        res.header('Access-Control-Allow-Origin', '*'); 
         const searchTerm = "farmer";
         const user =await UserModel.find();
         const users = user
@@ -568,6 +612,7 @@ app.get("/api/users/farmers",asyncHandler(
 )
 app.get("/api/users/buyers",asyncHandler(
     async(req,res)=>{
+        res.header('Access-Control-Allow-Origin', '*'); 
         const searchTerm = "buyer";
         const user =await UserModel.find();
         const users = user
@@ -580,6 +625,7 @@ app.get("/api/users/buyers",asyncHandler(
 ) 
 app.get("/api/users/destro/:searchTerm",asyncHandler(
     async(req,res)=>{
+        res.header('Access-Control-Allow-Origin', '*'); 
         const searchTerm = req.params.searchTerm;
         await UserModel.deleteOne({id:searchTerm}); 
         res.send(searchTerm)
@@ -587,6 +633,7 @@ app.get("/api/users/destro/:searchTerm",asyncHandler(
 )) 
 app.get("/api/destro",asyncHandler(
     async(req,res)=>{
+        res.header('Access-Control-Allow-Origin', '*'); 
         const searchTerm = req.params.searchTerm;
         await UserModel.deleteMany(); 
         await WorkModel.deleteMany();
@@ -598,7 +645,7 @@ app.get("/api/destro",asyncHandler(
 )) 
 app.get("/api/seed",asyncHandler(
     async (req,res)=>{  
-         
+        res.header('Access-Control-Allow-Origin', '*'); 
         const userCount =await UserModel.countDocuments();
         if(userCount>0){
             await UserModel.deleteMany(); 
