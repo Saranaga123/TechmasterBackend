@@ -26,6 +26,8 @@ export interface User{
     lon:string;
     rated:string;
     district:string;
+    forgotque:string;
+    forgotans:string;
 }
 export const UserSchema = new Schema<User>(
     {
@@ -54,6 +56,8 @@ export const UserSchema = new Schema<User>(
         lon:{type:String, required:false},
         rated:{type:String, required:false},
         district:{type:String, required:false},
+        forgotque:{type:String, required:false},
+        forgotans:{type:String, required:false},
 
     },{
         toJSON:{

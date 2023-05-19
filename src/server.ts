@@ -16,6 +16,7 @@ import { AdminNote, AdminNoteModel } from "./models/adminNote.model";
 import { WorkLikeRating, WorkLikeRatingRatingModel } from "./models/worklikerating.model";
 import { WorkDisLikeRating, WorkDisLikeRatingRatingModel } from "./models/workdislikerating.model";
 import { CusReqModel } from "./models/cusrequest.model"; 
+import { goLive, goLiveModel } from "./models/liveLocationDetails.model";
 dbConnect(); 
     
 const app = express(); 
@@ -185,7 +186,7 @@ app.post("/api/users/Create", asyncHandler(
     async (req, res, next) => {
       res.header('Access-Control-Allow-Origin', '*');
       try {
-        const { add1, add2, add3, email, id, name, bname, nic, password, document, rated, role, tp, btp, type, lat, lon, cat1, cat2, cat3, cat4, cat5, cat6, cat7, cat8, district } = req.body;
+        const { add1, add2, add3, email, id, name, bname, nic, password, document, rated, role, tp, btp, type, lat, lon, cat1, cat2, cat3, cat4, cat5, cat6, cat7, cat8, district,forgotans,forgotque } = req.body;
         const user = await UserModel.findOne({ email });
         if (user) {
           res.send("already");
@@ -218,7 +219,9 @@ app.post("/api/users/Create", asyncHandler(
           cat8: cat8,
           bname: bname,
           btp: btp,
-          district: district
+          district: district,
+          forgotans:forgotans,
+          forgotque:forgotque
         };
         const dbUser = await UserModel.create(newUser);
         res.send("Done");
@@ -228,6 +231,22 @@ app.post("/api/users/Create", asyncHandler(
       }
     }
   ));
+ 
+app.get("/api/users/frgtpw/:searchTerm",asyncHandler(
+    async(req,res)=>{
+        res.header('Access-Control-Allow-Origin', '*'); 
+        const searchTerm = req.params.searchTerm;
+        const user =await UserModel.find();
+        const users = user.filter(users => users.email.toLowerCase().includes(searchTerm.toLowerCase()));
+        if(users.length>0){ 
+            res.send(users)
+        }else{ 
+            res.send("Fake User")
+        }
+        
+    }
+)
+)
 app.post("/api/users/Update", asyncHandler(
     async(req, res, next) => {
         res.header('Access-Control-Allow-Origin', '*'); 
@@ -311,6 +330,23 @@ app.post("/api/users/Updatepw", asyncHandler(
         return;
       }
       res.send("Done");
+    }
+  ));
+  app.post("/api/users/update-password", asyncHandler(
+    async(req, res, next) => {
+      res.header('Access-Control-Allow-Origin', '*'); 
+      const { email, password } = req.body;
+  
+      const query = { email };
+      const update = { password };
+  
+      const options = { new: true, upsert: true };
+      const dbUser = await UserModel.findOneAndUpdate(query, update, options);
+      if (!dbUser) {
+        res.send("Failed to update password.");
+        return;
+      }
+      res.send("Password updated successfully.");
     }
   ));
 app.get("/api/users/destro",asyncHandler(
@@ -492,6 +528,50 @@ app.post("/api/works/Create",asyncHandler(
         res.json(dbWork);
     }
 ))
+app.get("/api/live/get/:searchTerm",asyncHandler(
+    async(req,res)=>{
+        res.header('Access-Control-Allow-Origin', '*'); 
+        const searchTerm = req.params.searchTerm;
+        const details =await goLiveModel.find();
+        const detail = details
+        .filter(details => details.providerid.toLowerCase()
+        .includes(searchTerm.toLowerCase()));
+    
+        res.send(detail)
+    }
+)
+)
+app.post("/api/live/config", asyncHandler(
+    async (req, res, next) => {
+      res.header('Access-Control-Allow-Origin', '*');
+  
+      const { providerid, lon, lat, activated } = req.body;
+  
+      // Check if providerid exists
+      const existingLive = await goLiveModel.findOne({ providerid });
+  
+      if (existingLive) {
+        // Update existing entry
+        existingLive.lon = lon;
+        existingLive.lat = lat;
+        existingLive.activated = activated;
+  
+        const updatedLive = await existingLive.save();
+        res.json(updatedLive);
+      } else {
+        // Create a new entry
+        const newLive = {
+          providerid: providerid,
+          lon: lon,
+          lat: lat,
+          activated: activated
+        };
+  
+        const createdLive = await goLiveModel.create(newLive);
+        res.json(createdLive);
+      }
+    }
+  ));
 app.post("/api/works/image/Create",asyncHandler(
     async(req,res,next)=>{
         res.header('Access-Control-Allow-Origin', '*'); 
@@ -518,6 +598,7 @@ app.get("/api/works/search/:searchTerm",asyncHandler(
     }
 )
 )
+
 app.get("/api/users/search/:searchTerm",asyncHandler(
         async(req,res)=>{
             res.header('Access-Control-Allow-Origin', '*'); 

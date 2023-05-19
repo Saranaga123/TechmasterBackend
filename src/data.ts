@@ -25,7 +25,9 @@
     cat5:"true",
     cat6:"true",
     cat7:"true",
-    cat8:"true"  
+    cat8:"true",
+    forgotque:"Whats my fav number?",
+    forgotans:"fae0b27c451c728867a567e8c1bb4e53" 
   } ,
   // Provider User
   {
@@ -53,7 +55,9 @@
     cat6:"true",
     cat7:"true",
     cat8:"true",
-    district:"Colombo"
+    district:"colombo",
+    forgotque:"Whats my fav number?",
+    forgotans:"fae0b27c451c728867a567e8c1bb4e53" 
   } ,
   // Admin User
   {
@@ -81,7 +85,9 @@
     cat6:"true",
     cat7:"true",
     cat8:"true",
-    district:"Colombo"
+    district:"Colombo",
+    forgotque:"Whats my fav number?",
+    forgotans:"fae0b27c451c728867a567e8c1bb4e53" 
   } 
 ];
 export const sample_work: any[] = [
